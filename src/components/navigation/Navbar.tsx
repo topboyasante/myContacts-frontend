@@ -108,17 +108,20 @@ function Navbar({ isAuthenticated }: NavbarProps) {
                 DisclosureButton={
                   <section className="flex items-center">
                     <section className="flex items-center gap-2">
-                      <p>billGGates@icloud.com</p>
+                      <Avatar size="25" round />
+                      <p>{user?.username}</p>
                     </section>
                     <BiChevronDown className="text-xl" />
                   </section>
                 }
                 DisclosurePanel={
                   <section className="flex flex-col gap-y-2">
-                    <section className="flex items-center gap-3">
-                      <IoIosPersonAdd />
-                      <p className="font-semibold text-sm">Add Contact</p>
-                    </section>
+                    <Link to={`/contacts/add`}>
+                      <section className="flex items-center gap-3">
+                        <IoIosPersonAdd />
+                        <p className="font-semibold text-sm">Add Contact</p>
+                      </section>
+                    </Link>
                     <button
                       onClick={LogOut}
                       className="flex items-center gap-3"

@@ -7,7 +7,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 function Register() {
   const [showPassword, setShowPassword] = useState(false);
-  const { mutate: RegisterUser, isPending } = useMutationRequest(
+  const { PostData, PostedPending } = useMutationRequest(
     "users/register",
     "register_user"
   );
@@ -21,7 +21,7 @@ function Register() {
 
   function onSubmit(data: RegisterUserInput) {
     try {
-      RegisterUser(data);
+      PostData(data);
       toast.success("User Created!");
       reset();
     } catch (err) {
@@ -145,7 +145,7 @@ function Register() {
                 <button
                   type="submit"
                   className="bg-secondary rounded-full p-2 w-[100px] text-sm disabled:bg-gray-500  disabled:text-white ease-in duration-300 disabled:cursor-not-allowed"
-                  disabled={isPending}
+                  disabled={PostedPending}
                 >
                   Sign Up
                 </button>

@@ -5,7 +5,7 @@ import useMutationRequest from "../../hooks/useMutationRequest";
 
 function AddContacts() {
     const navigate = useNavigate();
-    const { mutate: AddContact, isPending } = useMutationRequest<IContact>("contacts","contacts");
+    const {PostData, PostedPending } = useMutationRequest<IContact>("contacts","contacts");
   
     const {
       register,
@@ -16,7 +16,7 @@ function AddContacts() {
   
     function onSubmit(data: IContact) {
       try {
-        AddContact(data);
+        PostData(data);
         toast.success("Contact Added!");
         reset();
         navigate("/contacts");
@@ -79,10 +79,10 @@ function AddContacts() {
          
           <button
             className="bg-primary text-white px-4 py-2 rounded"
-            disabled={isPending}
+            disabled={PostedPending}
             type="submit"
           >
-            {isPending ? <h1>Loading</h1> : "Submit"}
+            {PostedPending ? <h1>Loading</h1> : "Submit"}
           </button>
         </form>
       </section>

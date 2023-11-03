@@ -6,6 +6,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Cookies from "js-cookie";
 import Main from "../pages/contacts/Main";
 import AddContacts from "../pages/contacts/AddContacts";
+import EditContact from "../pages/contacts/EditContact";
 
 function AppRoutes() {
   //Find a way to always get the token
@@ -23,6 +24,7 @@ function AppRoutes() {
       >
         <Route index element={<Main />} />
         <Route path="add" element={<AddContacts/>}/>
+        <Route path="edit/:id" element={<EditContact/>}/>
       </Route>
     </Routes>
   );
