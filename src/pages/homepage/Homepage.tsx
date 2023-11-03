@@ -1,10 +1,10 @@
 import Hero from "../../components/homepage/Hero"
-import HomepageNavbar from "../../components/navigation/Navbar"
+import Navbar from "../../components/navigation/Navbar"
 
 function Homepage() {
   return (
     <section>
-      <HomepageNavbar/>
+      <Navbar isAuthenticated={false}/>
       <Hero/>
     </section>
   )
