@@ -35,12 +35,16 @@ function useMutationRequest<T>(url: string, key: string) {
     isSuccess: UpdatedSuccess,
   } = useMutation({
     mutationFn: async (payload: T) => {
-      const res = await axios.put(
+      await axios.put(
         `https://mycontacts-backend-fjb8.onrender.com/api/${url}`,
         payload,
         { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
-      return res.data;
+      ).then((res)=>{
+        return res.data;
+      })
+      .catch((err)=>{
+        return err
+      })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

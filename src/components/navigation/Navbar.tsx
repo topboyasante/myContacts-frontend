@@ -51,12 +51,12 @@ function Navbar({ isAuthenticated }: NavbarProps) {
                   }
                   MenuItemsContent={
                     <section className="flex flex-col gap-y-2">
-                      <Link to={`/contacts/add`}>
+                      {/* <Link to={`/contacts/add`}>
                         <section className="flex items-center gap-3">
                           <IoIosPersonAdd />
                           <p className="font-semibold text-sm">Add Contact</p>
                         </section>
-                      </Link>
+                      </Link> */}
                       <button
                         onClick={LogOut}
                         className="flex items-center gap-3"

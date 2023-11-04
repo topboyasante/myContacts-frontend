@@ -9,3 +9,7 @@ body {
 ::-webkit-scrollbar{
   display: none;
 }
+
+.auth-style-top{
+  clip-path: polygon(0 0, 0% 100%, 100% 0);
+}

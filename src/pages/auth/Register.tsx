@@ -1,16 +1,15 @@
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
-import useMutationRequest from "../../hooks/useMutationRequest";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import Loader from "../../components/ui/Loader";
+import axios from "axios";
 
 function Register() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const { PostData, PostedPending } = useMutationRequest(
-    "users/register",
-    "register_user"
-  );
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -20,25 +19,36 @@ function Register() {
   } = useForm<RegisterUserInput>();
 
   function onSubmit(data: RegisterUserInput) {
-    try {
-      PostData(data);
-      toast.success("User Created!");
-      reset();
-    } catch (err) {
-      toast.error("There was an error.");
-    }
+    setLoading(true);
+    axios
+      .post(
+        "https://mycontacts-backend-fjb8.onrender.com/api/users/register",
+        data
+      )
+      .then(() => {
+        toast.success("User Created!");
+        setLoading(false);
+        reset();
+        navigate("/auth/sign-in");
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(`${err.response.data.message}`);
+      });
   }
 
   return (
     <section className="w-full lg:h-screen bg-white">
       <section className="w-full h-full flex items-center">
         {/* Left Side */}
-        <section className="hidden lg:block w-full h-full lg:w-[25%] bg-tertiary text-white p-5">
-          <Link to={`/`}>
-            <p className="font-semibold text-2xl">
-              My<span className="text-secondary">Contacts</span>
-            </p>
-          </Link>
+        <section className="hidden lg:block w-full h-full lg:w-[25%] bg-secondary text-white">
+          <section className="auth-style-top bg-tertiary h-[100%] p-5">
+            <Link to={`/`}>
+              <p className="font-semibold text-2xl">
+                My<span className="text-secondary">Contacts</span>
+              </p>
+            </Link>
+          </section>
         </section>
         {/* Right Side */}
         <section className="w-full lg:w-[75%] h-full lg:h-auto p-5">
@@ -118,13 +128,13 @@ function Register() {
                     />
                     <section className="w-[5%] flex justify-center items-center">
                       {showPassword ? (
-                        <button onClick={() => setShowPassword(!showPassword)}>
+                        <div onClick={() => setShowPassword(!showPassword)}>
                           <AiOutlineEyeInvisible />
-                        </button>
+                        </div>
                       ) : (
-                        <button onClick={() => setShowPassword(!showPassword)}>
+                        <div onClick={() => setShowPassword(!showPassword)}>
                           <AiOutlineEye />
-                        </button>
+                        </div>
                       )}
                     </section>
                   </section>
@@ -150,10 +160,14 @@ function Register() {
                 <br />
                 <button
                   type="submit"
-                  className="bg-secondary rounded-full p-2 w-[100px] text-sm disabled:bg-gray-500  disabled:text-white ease-in duration-300 disabled:cursor-not-allowed"
-                  disabled={PostedPending}
+                  className="flex justify-center items-center bg-secondary rounded-full p-2 w-[100px] text-sm disabled:bg-gray-500  disabled:text-white ease-in duration-300 disabled:cursor-not-allowed"
+                  disabled={loading}
                 >
-                  Sign Up
+                  {loading ? (
+                    <Loader height="20" width="20" color="#0C0C1D" />
+                  ) : (
+                    "Sign Up"
+                  )}
                 </button>
               </form>
             </section>

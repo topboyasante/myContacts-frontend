@@ -3,19 +3,14 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-// import useMutationRequest from "../../hooks/useMutationRequest";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import axios from "axios";
+import Loader from "../../components/ui/Loader";
 
 function Login() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  // const {
-  //   mutate: LoginUser,
-  //   isPending,
-  //   data: LoginData,
-  //   isSuccess,
-  // } = useMutationRequest("users/login");
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -25,6 +20,7 @@ function Login() {
   } = useForm<LoginUserInput>();
 
   function onSubmit(data: LoginUserInput) {
+    setLoading(true);
     axios
       .post(
         "https://mycontacts-backend-fjb8.onrender.com/api/users/login",
@@ -35,18 +31,18 @@ function Login() {
           expires: 30,
           secure: true,
         });
-        toast.success("Logged in! Redirecting you to the homepage");
-        reset();
       })
       .then(async () => {
         const token = await Cookies.get("accessToken");
         if (token) {
+          setLoading(false);
+          reset();
           navigate("/contacts");
         }
       })
       .catch((err) => {
-        console.log(err);
-        toast.error("There was an error.");
+        setLoading(false);
+        toast.error(`${err.response.data.message}`);
       });
   }
 
@@ -54,12 +50,14 @@ function Login() {
     <section className="w-full h-screen bg-white">
       <section className="w-full h-full flex items-center">
         {/* Left Side */}
-        <section className="hidden lg:block w-full h-full lg:w-[25%] bg-tertiary text-white p-5">
-          <Link to={`/`}>
-            <p className="font-semibold text-2xl">
-              My<span className="text-secondary">Contacts</span>
-            </p>
-          </Link>
+        <section className="hidden lg:block w-full h-full lg:w-[25%] bg-secondary text-white">
+          <section className="auth-style-top bg-tertiary h-[100%] p-5">
+            <Link to={`/`}>
+              <p className="font-semibold text-2xl">
+                My<span className="text-secondary">Contacts</span>
+              </p>
+            </Link>
+          </section>
         </section>
         {/* Right Side */}
         <section className="w-full lg:w-[75%] h-full lg:h-auto p-5">
@@ -109,13 +107,13 @@ function Login() {
                     />
                     <section className="w-[5%] flex justify-center items-center">
                       {showPassword ? (
-                        <button onClick={() => setShowPassword(!showPassword)}>
+                        <div onClick={() => setShowPassword(!showPassword)}>
                           <AiOutlineEyeInvisible />
-                        </button>
+                        </div>
                       ) : (
-                        <button onClick={() => setShowPassword(!showPassword)}>
+                        <div onClick={() => setShowPassword(!showPassword)}>
                           <AiOutlineEye />
-                        </button>
+                        </div>
                       )}
                     </section>
                   </section>
@@ -125,10 +123,15 @@ function Login() {
                 </section>
                 <br />
                 <button
-                  className="bg-secondary rounded-full p-2 w-[100px] text-sm disabled:bg-gray-500  disabled:text-white ease-in duration-300 disabled:cursor-not-allowed"
-                  // disabled={isPending}
+                  type="submit"
+                  className="flex justify-center items-center bg-secondary rounded-full p-2 w-[100px] text-sm disabled:bg-gray-300  disabled:text-white ease-in duration-300 disabled:cursor-not-allowed"
+                  disabled={loading}
                 >
-                  Sign In
+                  {loading ? (
+                    <Loader height="20" width="20" color="#0C0C1D" />
+                  ) : (
+                    "Sign In"
+                  )}
                 </button>
               </form>
             </section>
