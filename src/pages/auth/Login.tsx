@@ -143,6 +143,14 @@ function Login() {
                   <Link to={`/auth/sign-up`}>Sign Up</Link>
                 </span>
               </p>
+              <hr  className="my-3"/>
+              <p className="font-semibold">
+                Here are some test credentials:
+                <br />
+                Email: <span className="text-primary">johndoe@gmail.com</span>
+                <br />
+                Password: <span className="text-primary">testuser123</span>
+              </p>
             </section>
           </section>
         </section>

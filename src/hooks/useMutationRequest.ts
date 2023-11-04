@@ -23,7 +23,7 @@ function useMutationRequest<T>(url: string, key: string) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [key],
+        queryKey: [`${key}`],
       });
     },
   });
@@ -35,20 +35,16 @@ function useMutationRequest<T>(url: string, key: string) {
     isSuccess: UpdatedSuccess,
   } = useMutation({
     mutationFn: async (payload: T) => {
-      await axios.put(
+      const res = await axios.put(
         `https://mycontacts-backend-fjb8.onrender.com/api/${url}`,
         payload,
         { headers: { Authorization: `Bearer ${accessToken}` } }
-      ).then((res)=>{
-        return res.data;
-      })
-      .catch((err)=>{
-        return err
-      })
+      );
+      return res.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [key],
+        queryKey: [`${key}`],
       });
     },
   });
@@ -68,11 +64,10 @@ function useMutationRequest<T>(url: string, key: string) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [key],
+        queryKey: [`${key}`],
       });
     },
   });
-
 
   return {
     PostData,

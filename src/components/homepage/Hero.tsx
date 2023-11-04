@@ -14,9 +14,8 @@ function Hero() {
               <span className="text-secondary">any device.</span>
             </h1>
             <p className="my-5 text-white text-center md:w-[80%] mx-auto">
-              Create contact records, log sales activities, and view previous
-              interactions using contact management tools to build
-              relationships.
+              Unlock the Power of Seamless Contact Access. Wherever You Are,
+              Whenever You Need, on Any Device
             </p>
             <section className="flex justify-center">
               <Link to={`/auth/sign-up`}>
@@ -25,8 +24,8 @@ function Hero() {
                 </button>
               </Link>
             </section>
-            <section className="flex justify-center items-center my-5">
-              <img src={HeroImg} alt="hero" className="w-[1000px]" />
+            <section className="flex justify-center items-center xl:w-[1280px] mx-auto">
+              <img src={HeroImg} alt="hero" className="w-full" />
             </section>
           </section>
         </section>

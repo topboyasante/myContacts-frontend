@@ -17,6 +17,7 @@ export function useFetchData<T>(url: string, key: string) {
   const { isLoading, data, isError } = useQuery<unknown, unknown, T>({
     queryKey: [key],
     queryFn: () => fetchFunction<T>(url),
+    refetchOnWindowFocus:false
   });
   return { isLoading, data, isError };
 }
