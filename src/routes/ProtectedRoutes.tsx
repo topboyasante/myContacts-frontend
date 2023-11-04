@@ -1,15 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Layout from "../layout/Layout";
+import Cookies from "js-cookie";
 
-type RouteProps = {
-  isAuthenticated: boolean;
-};
+function ProtectedRoutes() {
+  const token = Cookies.get("accessToken");
 
-function ProtectedRoutes({ isAuthenticated }: RouteProps) {
-  if (isAuthenticated) {
+  if (token) {
     return (
       <Layout>
-        <Outlet/>
+        <Outlet />
       </Layout>
     );
   } else {

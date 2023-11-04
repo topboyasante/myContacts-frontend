@@ -97,8 +97,8 @@ function Navbar({ isAuthenticated }: NavbarProps) {
       <section
         className={
           navIsOpen
-            ? "lg:hidden fixed z-[40] h-fit pt-[7vh] bg-white border-b w-full top-0 left-0 ease duration-500"
-            : "lg:hidden fixed z-[40] h-fit pt-[7vh] bg-white border-b w-full top-[-50vh] left-0 ease duration-500"
+            ? "lg:hidden fixed z-[40] h-auto pt-[7vh] bg-white border-b w-full top-0 left-0 ease duration-500"
+            : "lg:hidden fixed z-[40] h-auto pt-[7vh] bg-white border-b w-full top-[-50vh] left-0 ease duration-500"
         }
       >
         {isAuthenticated ? (

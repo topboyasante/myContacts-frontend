@@ -3,28 +3,21 @@ import Homepage from "../pages/homepage/Homepage";
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
 import ProtectedRoutes from "./ProtectedRoutes";
-import Cookies from "js-cookie";
 import Main from "../pages/contacts/Main";
 import AddContacts from "../pages/contacts/AddContacts";
 import EditContact from "../pages/contacts/EditContact";
 
 function AppRoutes() {
-  //Find a way to always get the token
-  const token = Cookies.get("accessToken");
-
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
       <Route path="/auth/sign-up" element={<Register />} />
       <Route path="/auth/sign-in" element={<Login />} />
 
-      <Route
-        path="/contacts"
-        element={<ProtectedRoutes isAuthenticated={token ? true : false} />}
-      >
+      <Route path="/contacts" element={<ProtectedRoutes />}>
         <Route index element={<Main />} />
-        <Route path="add" element={<AddContacts/>}/>
-        <Route path="edit/:id" element={<EditContact/>}/>
+        <Route path="add" element={<AddContacts />} />
+        <Route path="edit/:id" element={<EditContact />} />
       </Route>
     </Routes>
   );

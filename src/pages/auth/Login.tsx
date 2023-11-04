@@ -24,26 +24,32 @@ function Login() {
     formState: { errors },
   } = useForm<LoginUserInput>();
 
-  async function onSubmit(data: LoginUserInput) {
-    await axios
-      .post("https://mycontacts-backend-fjb8.onrender.com/api/users/login", data)
-      .then((res) => {
-        console.log(res.data)
-        Cookies.set("accessToken", res.data.accessToken, {
+  function onSubmit(data: LoginUserInput) {
+    axios
+      .post(
+        "https://mycontacts-backend-fjb8.onrender.com/api/users/login",
+        data
+      )
+      .then(async (res) => {
+        await Cookies.set("accessToken", res.data.accessToken, {
           expires: 30,
           secure: true,
         });
         toast.success("Logged in! Redirecting you to the homepage");
         reset();
-        setTimeout(() => {
+      })
+      .then(async () => {
+        const token = await Cookies.get("accessToken");
+        if (token) {
           navigate("/contacts");
-        }, 2000);
+        }
       })
       .catch((err) => {
         console.log(err);
         toast.error("There was an error.");
       });
   }
+
   return (
     <section className="w-full h-screen bg-white">
       <section className="w-full h-full flex items-center">
@@ -56,8 +62,14 @@ function Login() {
           </Link>
         </section>
         {/* Right Side */}
-        <section className="w-full lg:w-[75%] p-5">
+        <section className="w-full lg:w-[75%] h-full lg:h-auto p-5">
           <section className="max-w-[95%] lg:max-w-[50%] mx-auto">
+            <Link to={`/`}>
+              <p className="lg:hidden font-semibold text-xl">
+                My<span className="text-primary">Contacts</span>
+              </p>
+            </Link>
+            <br />
             {/* Heading */}
             <section className="w-full">
               <h1 className="font-semibold text-2xl">

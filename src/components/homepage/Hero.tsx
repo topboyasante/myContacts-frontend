@@ -7,7 +7,7 @@ function Hero() {
       <section className="max-w-screen-xl h-full mx-auto">
         <section className="w-full h-full flex justify-center items-center">
           <section className="p-5 xl:px-0">
-            <h1 className="text-white text-xl md:text-3xl lg:text-5xl font-semibold text-center">
+            <h1 className="text-white text-3xl lg:text-5xl font-semibold text-center">
               Access your <span className="text-secondary">contacts.</span>
               <br />
               Anywhere, Anytime and on{" "}
@@ -20,7 +20,7 @@ function Hero() {
             </p>
             <section className="flex justify-center">
               <Link to={`/auth/sign-up`}>
-                <button className="bg-secondary text-tertiary rounded-full p-2 w-[100px] text-sm">
+                <button className="bg-secondary text-tertiary rounded-full p-2 w-[150px]">
                   Get Started
                 </button>
               </Link>

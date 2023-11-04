@@ -30,7 +30,7 @@ function Register() {
   }
 
   return (
-    <section className="w-full h-screen bg-white">
+    <section className="w-full lg:h-screen bg-white">
       <section className="w-full h-full flex items-center">
         {/* Left Side */}
         <section className="hidden lg:block w-full h-full lg:w-[25%] bg-tertiary text-white p-5">
@@ -41,8 +41,14 @@ function Register() {
           </Link>
         </section>
         {/* Right Side */}
-        <section className="w-full lg:w-[75%] p-5">
+        <section className="w-full lg:w-[75%] h-full lg:h-auto p-5">
           <section className="max-w-[95%] lg:max-w-[50%] mx-auto">
+            <Link to={`/`}>
+              <p className="lg:hidden font-semibold text-xl">
+                My<span className="text-primary">Contacts</span>
+              </p>
+            </Link>
+            <br />
             {/* Heading */}
             <section className="w-full">
               <h1 className="font-semibold text-2xl">
