@@ -49,6 +49,27 @@ function useMutationRequest<T>(url: string, key: string) {
     },
   });
 
+  const {
+    mutate: DeleteData,
+    data: DeletedData,
+    isPending: DeletedPending,
+    isSuccess: DeletedSuccess,
+  } = useMutation({
+    mutationFn: async () => {
+      const res = await axios.delete(
+        `https://mycontacts-backend-fjb8.onrender.com/api/${url}`,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [key],
+      });
+    },
+  });
+
+
   return {
     PostData,
     PostedData,
@@ -58,6 +79,10 @@ function useMutationRequest<T>(url: string, key: string) {
     UpdatedData,
     UpdatedPending,
     UpdatedSuccess,
+    DeleteData,
+    DeletedData,
+    DeletedPending,
+    DeletedSuccess,
   };
 }
 

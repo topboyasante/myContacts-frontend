@@ -102,7 +102,7 @@ function Navbar({ isAuthenticated }: NavbarProps) {
         }
       >
         {isAuthenticated ? (
-          <section>
+          <section className="bg-white">
             <section className="flex flex-col lg:hidden gap-5 lg:items-center p-5">
               <Disclosure
                 DisclosureButton={
@@ -135,7 +135,7 @@ function Navbar({ isAuthenticated }: NavbarProps) {
             </section>
           </section>
         ) : (
-          <section className="flex flex-col justify-center gap-5 w-full h-full p-5">
+          <section className="bg-white flex flex-col justify-center gap-5 w-full h-full p-5">
             <Link to={`/auth/sign-in`}>
               <button className="border border-secondary rounded-full p-2 w-[100px] text-sm">
                 Sign In
