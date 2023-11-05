@@ -11,7 +11,7 @@ function Layout({ children }: LayoutProps) {
     <main>
       <Navbar isAuthenticated={token ? true : false} />
       <section className="w-full pt-[7vh]">
-        <section className="max-w-screen-xl mx-auto p-5">{children}</section>
+        <section className="max-w-screen-xl mx-auto">{children}</section>
       </section>
     </main>
   );

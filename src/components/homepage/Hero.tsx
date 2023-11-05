@@ -3,7 +3,7 @@ import HeroImg from "../../assets/my-contacts.png";
 
 function Hero() {
   return (
-    <section className="bg-tertiary pt-[15vh] h-screen lg:h-full w-full">
+    <section className="bg-tertiary md:pt-[7vh] h-screen lg:h-full w-full">
       <section className="max-w-screen-xl h-full mx-auto">
         <section className="w-full h-full flex justify-center items-center">
           <section className="p-5 xl:px-0">

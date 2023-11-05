@@ -3,12 +3,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import { BiChevronDown } from "react-icons/bi";
+import { BsGear } from "react-icons/bs";
 import DropDown from "../ui/DropDown";
 import Cookies from "js-cookie";
-import Disclosure from "../ui/Disclosure";
 import { useFetchData } from "../../hooks/useFetchData";
 import Avatar from "react-avatar";
-import { IoIosPersonAdd } from "react-icons/io";
 
 type NavbarProps = {
   isAuthenticated: boolean;
@@ -51,12 +50,12 @@ function Navbar({ isAuthenticated }: NavbarProps) {
                   }
                   MenuItemsContent={
                     <section className="flex flex-col gap-y-2">
-                      {/* <Link to={`/contacts/add`}>
+                      <Link to={`/settings`}>
                         <section className="flex items-center gap-3">
-                          <IoIosPersonAdd />
-                          <p className="font-semibold text-sm">Add Contact</p>
+                          <BsGear/>
+                          <p className="font-semibold text-sm">Settings</p>
                         </section>
-                      </Link> */}
+                      </Link>
                       <button
                         onClick={LogOut}
                         className="flex items-center gap-3"
@@ -104,34 +103,18 @@ function Navbar({ isAuthenticated }: NavbarProps) {
         {isAuthenticated ? (
           <section className="bg-white">
             <section className="flex flex-col lg:hidden gap-5 lg:items-center p-5">
-              <Disclosure
-                DisclosureButton={
-                  <section className="flex items-center">
-                    <section className="flex items-center gap-2">
-                      <Avatar size="25" round />
-                      <p>{user?.username}</p>
-                    </section>
-                    <BiChevronDown className="text-xl" />
-                  </section>
-                }
-                DisclosurePanel={
-                  <section className="flex flex-col gap-y-2">
-                    <Link to={`/contacts/add`}>
-                      <section className="flex items-center gap-3">
-                        <IoIosPersonAdd />
-                        <p className="font-semibold text-sm">Add Contact</p>
-                      </section>
-                    </Link>
-                    <button
-                      onClick={LogOut}
-                      className="flex items-center gap-3"
-                    >
-                      <FiLogOut />
-                      <p className="font-semibold text-sm">Log Out</p>
-                    </button>
-                  </section>
-                }
-              />
+              <section className="flex items-center">
+                <section className="flex items-center gap-2">
+                  <Avatar size="25" round />
+                  <p>{user?.username}</p>
+                </section>
+              </section>
+              <section className="flex flex-col gap-y-2">
+                <button onClick={LogOut} className="flex items-center gap-3">
+                  <FiLogOut />
+                  <p className="font-semibold text-sm">Log Out</p>
+                </button>
+              </section>
             </section>
           </section>
         ) : (
