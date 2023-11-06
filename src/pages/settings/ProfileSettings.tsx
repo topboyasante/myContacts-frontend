@@ -6,6 +6,7 @@ import { useFetchData } from "../../hooks/useFetchData";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Avatar from "react-avatar";
+import { useForm } from "react-hook-form";
 
 function ProfileSettings() {
   const navigate = useNavigate();
@@ -15,6 +16,16 @@ function ProfileSettings() {
     `users/delete/${user?.id}`,
     "contacts"
   );
+  const { UpdateData, UpdatedPending } = useMutationRequest<IContact>(
+    `users/delete/${user?.id}`,
+    "contacts"
+  );
+
+  const { register, handleSubmit } = useForm<UpdateUserInput>();
+
+  function onSubmit(data: UpdateUserInput) {
+    console.log(data);
+  }
 
   function deleteData() {
     DeleteData();
@@ -47,7 +58,7 @@ function ProfileSettings() {
               />
               {/* Right Side */}
               <section className="md:w-[85%]">
-                <form className="w-full">
+                <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
                   <section className="my-3">
                     <label htmlFor="name">Name</label>
                     <br />
@@ -55,6 +66,7 @@ function ProfileSettings() {
                       type="text"
                       defaultValue={user?.fullname}
                       className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
+                      {...register("fullname")}
                     />
                   </section>
                   <section className="my-3">
@@ -64,6 +76,7 @@ function ProfileSettings() {
                       type="text"
                       defaultValue={user?.username}
                       className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
+                      {...register("username")}
                     />
                   </section>
                   <section className="my-3">
@@ -73,15 +86,16 @@ function ProfileSettings() {
                       type="email"
                       defaultValue={user?.email}
                       className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
+                      {...register("email")}
                     />
                   </section>
+                  <button className="bg-secondary text-tertiary px-2 py-1 rounded">
+                    Save Changes
+                  </button>
                 </form>
               </section>
             </section>
             <section className="flex gap-5">
-              <button className="bg-secondary text-tertiary px-2 py-1 rounded">
-                Save Changes
-              </button>
               <button
                 onClick={() => setIsOpen(true)}
                 className="bg-red-900 text-white px-2 py-1 rounded"
