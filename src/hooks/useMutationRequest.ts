@@ -33,6 +33,7 @@ function useMutationRequest<T>(url: string, key: string) {
     data: UpdatedData,
     isPending: UpdatedPending,
     isSuccess: UpdatedSuccess,
+    isError:UpdateError
   } = useMutation({
     mutationFn: async (payload: T) => {
       const res = await axios.put(
@@ -78,6 +79,7 @@ function useMutationRequest<T>(url: string, key: string) {
     UpdatedData,
     UpdatedPending,
     UpdatedSuccess,
+    UpdateError,
     DeleteData,
     DeletedData,
     DeletedPending,

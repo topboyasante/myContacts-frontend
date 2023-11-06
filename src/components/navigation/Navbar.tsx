@@ -30,9 +30,11 @@ function Navbar({ isAuthenticated }: NavbarProps) {
         <section className="flex max-w-screen-xl mx-auto h-full justify-between items-center p-5">
           {/* Left */}
           <section>
-            <p className="font-semibold text-lg md:text-2xl">
-              My<span className="text-secondary">Contacts</span>
-            </p>
+            <Link to={isAuthenticated ? `/contacts` : `/`}>
+              <p className="font-semibold text-lg md:text-2xl">
+                My<span className="text-secondary">Contacts</span>
+              </p>
+            </Link>
           </section>
           {/* Right */}
           <section>
@@ -52,7 +54,7 @@ function Navbar({ isAuthenticated }: NavbarProps) {
                     <section className="flex flex-col gap-y-2">
                       <Link to={`/settings`}>
                         <section className="flex items-center gap-3">
-                          <BsGear/>
+                          <BsGear />
                           <p className="font-semibold text-sm">Settings</p>
                         </section>
                       </Link>
@@ -104,12 +106,21 @@ function Navbar({ isAuthenticated }: NavbarProps) {
           <section className="bg-white">
             <section className="flex flex-col lg:hidden gap-5 lg:items-center p-5">
               <section className="flex items-center">
-                <section className="flex items-center gap-2">
+                <section
+                  className="flex items-center gap-2"
+                  onClick={() => setNavIsOpen(!navIsOpen)}
+                >
                   <Avatar size="25" round />
                   <p>{user?.username}</p>
                 </section>
               </section>
               <section className="flex flex-col gap-y-2">
+                <Link to={`/settings`} onClick={() => setNavIsOpen(!navIsOpen)}>
+                  <section className="flex items-center gap-3">
+                    <BsGear />
+                    <p className="font-semibold text-sm">Settings</p>
+                  </section>
+                </Link>
                 <button onClick={LogOut} className="flex items-center gap-3">
                   <FiLogOut />
                   <p className="font-semibold text-sm">Log Out</p>

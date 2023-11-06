@@ -16,15 +16,19 @@ function ProfileSettings() {
     `users/delete/${user?.id}`,
     "contacts"
   );
-  const { UpdateData, UpdatedPending } = useMutationRequest<IContact>(
-    `users/delete/${user?.id}`,
+  const { UpdateData } = useMutationRequest<UpdateUserInput>(
+    `users/${user?.id}`,
     "contacts"
   );
 
   const { register, handleSubmit } = useForm<UpdateUserInput>();
 
+  //Edit User Data
   function onSubmit(data: UpdateUserInput) {
-    console.log(data);
+    UpdateData(data);
+    Cookies.remove("accessToken");
+    navigate("/auth/sign-in");
+    toast.success("Account Details Edited! Please Log in to refresh changes.");
   }
 
   function deleteData() {
