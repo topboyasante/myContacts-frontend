@@ -1,0 +1,99 @@
+import axios, { AxiosError } from "axios";
+import { QueryClient, useMutation } from "@tanstack/react-query";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
+const queryClient = new QueryClient();
+
+function useMutationRequest<T>(url: string, key: string) {
+  const accessToken = Cookies.get("accessToken");
+  const navigate = useNavigate()
+
+  const {
+    mutate: PostData,
+    data: PostedData,
+    isPending: PostedPending,
+    isSuccess: PostedSuccess,
+  } = useMutation({
+    mutationFn: async (payload: T) => {
+      const res = await axios.post(
+        `https://mycontacts-backend-fjb8.onrender.com/api/${url}`,
+        payload,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [`${key}`],
+      });
+    },
+  });
+
+  const {
+    mutate: UpdateData,
+    data: UpdatedData,
+    isPending: UpdatedPending,
+    isSuccess: UpdatedSuccess,
+   } = useMutation({
+    mutationFn: async (payload: T) => {
+      const res = await axios.put(
+        `https://mycontacts-backend-fjb8.onrender.com/api/${url}`,
+        payload,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      toast.success("Password Changed! Please Log in to refresh changes.");
+      Cookies.remove("accessToken");
+      navigate("/auth/sign-in");
+      queryClient.invalidateQueries({
+        queryKey: [`${key}`],
+      });
+    },
+    onError: (error:AxiosError<any,any>) => {
+      console.log(error);
+      // console.log(UpdateError?.message);
+      toast.error(`${error?.response?.data.message}`);
+    },
+  });
+
+  const {
+    mutate: DeleteData,
+    data: DeletedData,
+    isPending: DeletedPending,
+    isSuccess: DeletedSuccess,
+  } = useMutation({
+    mutationFn: async () => {
+      const res = await axios.delete(
+        `https://mycontacts-backend-fjb8.onrender.com/api/${url}`,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [`${key}`],
+      });
+    },
+  });
+
+  return {
+    PostData,
+    PostedData,
+    PostedPending,
+    PostedSuccess,
+    UpdateData,
+    UpdatedData,
+    UpdatedPending,
+    UpdatedSuccess,
+    DeleteData,
+    DeletedData,
+    DeletedPending,
+    DeletedSuccess,
+  };
+}
+
+export default useMutationRequest;

@@ -1,42 +1,26 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { Formik, Field, Form, FormikHelpers } from "formik";
 import Modal from "../../components/ui/Modal";
 import useMutationRequest from "../../hooks/useMutationRequest";
 import { useFetchData } from "../../hooks/useFetchData";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import Avatar from "react-avatar";
-import { useForm } from "react-hook-form";
+import Loader from "../../components/ui/Loader";
 
 function ProfileSettings() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data: user } = useFetchData<IUser>("users/current", "currentUser");
-  const { DeleteData, DeletedPending } = useMutationRequest<IContact>(
+  const { DeleteUser, DeletedUserIsPending } = useMutationRequest<IContact>(
     `users/delete/${user?.id}`,
     "contacts"
   );
-  const { UpdateData } = useMutationRequest<UpdateUserInput>(
-    `users/${user?.id}`,
-    "contacts"
-  );
+  const { EditUserData, EditedUserDataIsPending } =
+    useMutationRequest<UpdateUserInput>(`users/${user?.id}`, "currentUser");
 
-  const { register, handleSubmit } = useForm<UpdateUserInput>();
-
-  //Edit User Data
-  function onSubmit(data: UpdateUserInput) {
-    UpdateData(data);
-    Cookies.remove("accessToken");
-    navigate("/auth/sign-in");
-    toast.success("Account Details Edited! Please Log in to refresh changes.");
-  }
 
   function deleteData() {
-    DeleteData();
-    Cookies.remove("accessToken");
-    navigate("/auth/sign-in");
-    toast.success("Account Deleted!");
-    setIsOpen(false);
+    DeleteUser();
   }
 
   return (
@@ -62,41 +46,64 @@ function ProfileSettings() {
               />
               {/* Right Side */}
               <section className="md:w-[85%]">
-                <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-                  <section className="my-3">
-                    <label htmlFor="name">Name</label>
-                    <br />
-                    <input
-                      type="text"
-                      defaultValue={user?.fullname}
-                      className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
-                      {...register("fullname")}
-                    />
-                  </section>
-                  <section className="my-3">
-                    <label htmlFor="name">Username</label>
-                    <br />
-                    <input
-                      type="text"
-                      defaultValue={user?.username}
-                      className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
-                      {...register("username")}
-                    />
-                  </section>
-                  <section className="my-3">
-                    <label htmlFor="name">Email</label>
-                    <br />
-                    <input
-                      type="email"
-                      defaultValue={user?.email}
-                      className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
-                      {...register("email")}
-                    />
-                  </section>
-                  <button className="bg-secondary text-tertiary px-2 py-1 rounded">
-                    Save Changes
-                  </button>
-                </form>
+                <Formik
+                  initialValues={{
+                    fullname: user?.fullname!,
+                    username: user?.username!,
+                    email: user?.email!,
+                  }}
+                  onSubmit={(
+                    values: UpdateUserInput,
+                    { setSubmitting }: FormikHelpers<UpdateUserInput>
+                  ) => {
+                    EditUserData(values)
+                    setSubmitting(false);
+                  }}
+                >
+                  <Form className="w-full">
+                    <section className="my-3">
+                      <label htmlFor="fullname">Name</label>
+                      <br />
+                      <Field
+                        id="fullname"
+                        name="fullname"
+                        type="text"
+                        className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
+                      />
+                    </section>
+                    <section className="my-3">
+                      <label htmlFor="username">Username</label>
+                      <br />
+                      <Field
+                        id="username"
+                        name="username"
+                        type="text"
+                        className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
+                      />
+                    </section>
+                    <section className="my-3">
+                      <label htmlFor="email">Email</label>
+                      <br />
+                      <Field
+                        id="email"
+                        name="email"
+                        type="email"
+                        className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
+                      />
+                    </section>
+                    <button
+                      type="submit"
+                      className="bg-secondary text-tertiary px-2 py-1 rounded"
+                      disabled={EditedUserDataIsPending}
+                    >
+                      {EditedUserDataIsPending ? (
+                        <Loader height="20" width="20" color="#0C0C1D" />
+                      ) : (
+                        "Save Changes"
+                      )}
+                    </button>
+                  </Form>
+                </Formik>
               </section>
             </section>
             <section className="flex gap-5">
@@ -120,7 +127,7 @@ function ProfileSettings() {
             <div className="flex gap-5 mt-3">
               <button
                 onClick={deleteData}
-                disabled={DeletedPending}
+                disabled={DeletedUserIsPending}
                 className="bg-red-700 text-white px-3 py-1 rounded"
               >
                 Yes

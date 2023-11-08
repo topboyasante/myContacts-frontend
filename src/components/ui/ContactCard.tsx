@@ -7,19 +7,15 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Modal from "./Modal";
 import useMutationRequest from "../../hooks/useMutationRequest";
-import toast from "react-hot-toast";
 
 function ContactCard({ name, phone_number, _id, email }: IContactDetailed) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { DeleteData, DeletedPending } = useMutationRequest<IContact>(
-    `contacts/${_id}`,
-    "contacts"
-  );
+  const { DeleteContact, DeletedContactIsPending } =
+    useMutationRequest<IContact>(`contacts/${_id}`, "contacts");
 
   function deleteData() {
-    DeleteData();
-    toast.success("Contact Deleted!");
-    setIsOpen(false);
+    DeleteContact();
+    setIsOpen(DeletedContactIsPending);
   }
 
   return (
@@ -79,7 +75,7 @@ function ContactCard({ name, phone_number, _id, email }: IContactDetailed) {
             <div className="flex gap-5 mt-3">
               <button
                 onClick={deleteData}
-                disabled={DeletedPending}
+                disabled={DeletedContactIsPending}
                 className="bg-red-700 text-white px-3 py-1 rounded"
               >
                 Yes

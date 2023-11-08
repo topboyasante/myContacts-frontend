@@ -19,9 +19,6 @@ function ChangePassword() {
 
   function onSubmit(data: ChangePasswordInput) {
     UpdateData(data);
-    Cookies.remove("accessToken");
-    navigate("/auth/sign-in");
-    toast.success("Password Changed! Please Log in to refresh changes.");
   }
 
   return (
@@ -53,12 +50,12 @@ function ChangePassword() {
               <br />
               <section>
                 <label htmlFor="password" className="font-semibold">
-                  Old Password
+                  New Password
                 </label>
                 <section className="flex items-center border border-[#9EA1AB] bg-transparent  w-full rounded px-4 py-2 lg:px-2 lg:py-1">
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter your old password"
+                    placeholder="Enter your new password"
                     className="w-[95%] outline-none appearance-none"
                     {...register("new_password", { required: true })}
                   />
@@ -78,12 +75,12 @@ function ChangePassword() {
               <br />
               <section>
                 <label htmlFor="password" className="font-semibold">
-                  Old Password
+                  Confirm Password
                 </label>
                 <section className="flex items-center border border-[#9EA1AB] bg-transparent  w-full rounded px-4 py-2 lg:px-2 lg:py-1">
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter your old password"
+                    placeholder="Confirm your new password"
                     className="w-full outline-none appearance-none"
                     {...register("confirm_password", { required: true })}
                   />

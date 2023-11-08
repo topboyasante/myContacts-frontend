@@ -1,18 +1,16 @@
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useFetchData } from "../../hooks/useFetchData";
 import useMutationRequest from "../../hooks/useMutationRequest";
 import Loader from "../../components/ui/Loader";
 
 function EditContact() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { data: contact, isLoading } = useFetchData<IContactDetailed>(
     `contacts/${id}`,
     "contacts"
   );
-  const { UpdateData, UpdatedPending } = useMutationRequest<IContact>(
+  const { EditContact, EditedContactIsPending } = useMutationRequest<IContact>(
     `contacts/${id}`,
     "contacts"
   );
@@ -20,19 +18,11 @@ function EditContact() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<IContact>();
 
   function onSubmit(data: IContact) {
-    try {
-      UpdateData(data);
-      toast.success("Contact Updated!");
-      reset();
-      navigate("/contacts");
-    } catch (error) {
-      toast.error("There was an error.");
-    }
+    EditContact(data);
   }
 
   return (
@@ -96,10 +86,10 @@ function EditContact() {
 
               <button
                 className="bg-primary text-white px-4 py-2 rounded"
-                disabled={UpdatedPending}
+                disabled={EditedContactIsPending}
                 type="submit"
               >
-                {UpdatedPending ? <h1>Loading</h1> : "Submit"}
+                {EditedContactIsPending ? <Loader height="20" width="20" color="#0C0C1D" /> : "Submit"}
               </button>
             </form>
           )}

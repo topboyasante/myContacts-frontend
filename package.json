@@ -13,6 +13,7 @@
     "@headlessui/react": "^1.7.17",
     "@tanstack/react-query": "^5.4.3",
     "axios": "^1.6.0",
+    "formik": "^2.4.5",
     "framer-motion": "^10.16.4",
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
@@ -26,6 +27,7 @@
     "zustand": "^4.4.6"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^5.8.1",
     "@types/js-cookie": "^3.0.5",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

@@ -1,11 +1,9 @@
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import useMutationRequest from "../../hooks/useMutationRequest";
+import Loader from "../../components/ui/Loader";
 
 function AddContacts() {
-  const navigate = useNavigate();
-  const { PostData, PostedPending } = useMutationRequest<IContact>(
+  const { AddContact, AddedContactIsPending } = useMutationRequest<IContact>(
     "contacts",
     "contacts"
   );
@@ -13,19 +11,11 @@ function AddContacts() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<IContact>();
 
   function onSubmit(data: IContact) {
-    try {
-      PostData(data);
-      toast.success("Contact Added!");
-      reset();
-      navigate("/contacts");
-    } catch (error) {
-      toast.error("There was an error.");
-    }
+    AddContact(data);
   }
 
   return (
@@ -85,10 +75,14 @@ function AddContacts() {
 
             <button
               className="bg-primary text-white px-4 py-2 rounded"
-              disabled={PostedPending}
+              disabled={AddedContactIsPending}
               type="submit"
             >
-              {PostedPending ? <h1>Loading</h1> : "Submit"}
+              {AddedContactIsPending ? (
+                <Loader height="20" width="20" color="#0C0C1D" />
+              ) : (
+                "Submit"
+              )}
             </button>
           </form>
         </section>
