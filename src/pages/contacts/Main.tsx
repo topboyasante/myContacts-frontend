@@ -1,9 +1,7 @@
 import useFetchData from "../../hooks/useFetchData";
 import ContactCard from "../../components/ui/ContactCard";
 import Loader from "../../components/ui/Loader";
-import { IoIosPersonAdd } from "react-icons/io";
 import { AiOutlineSearch } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -13,10 +11,11 @@ function Main() {
   const accessToken = Cookies.get("accessToken");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchIsLoading, setSearchIsLoading] = useState<boolean>(false);
-  const { Contacts:data,isFetchingContacts,FetchContactsFailed } = useFetchData<IContactDetailed[]>(
-    "contacts",
-    "contacts"
-  );
+  const {
+    Contacts: data,
+    isFetchingContacts,
+    FetchContactsFailed,
+  } = useFetchData<IContactDetailed[]>("contacts", "contacts");
 
   async function search() {
     setSearchIsLoading(true);
@@ -104,12 +103,6 @@ function Main() {
           </section>
         </section>
       </section>
-
-      <Link to={`/contacts/add`}>
-        <div className="fixed bottom-5 right-0 m-8 bg-secondary rounded-full p-3 my-2">
-          <IoIosPersonAdd size={30} />
-        </div>
-      </Link>
     </section>
   );
 }
