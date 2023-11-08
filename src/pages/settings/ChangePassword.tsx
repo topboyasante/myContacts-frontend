@@ -2,23 +2,19 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import useMutationRequest from "../../hooks/useMutationRequest";
-import { useFetchData } from "../../hooks/useFetchData";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import useFetchData from "../../hooks/useFetchData";
 
 function ChangePassword() {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const { data: user } = useFetchData<IUser>("users/current", "currentUser");
+  const { UserDetails: user } = useFetchData<IUser>("users/current", "currentUser");
   const { register, handleSubmit } = useForm<ChangePasswordInput>();
-  const { UpdateData } = useMutationRequest<ChangePasswordInput>(
+  const { UpdatePassword } = useMutationRequest<ChangePasswordInput>(
     `users/password/${user?.id}`,
     "contacts"
   );
 
   function onSubmit(data: ChangePasswordInput) {
-    UpdateData(data);
+    UpdatePassword(data);
   }
 
   return (

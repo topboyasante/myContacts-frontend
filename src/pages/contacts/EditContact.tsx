@@ -1,12 +1,13 @@
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { useFetchData } from "../../hooks/useFetchData";
+import useFetchData from "../../hooks/useFetchData";
 import useMutationRequest from "../../hooks/useMutationRequest";
 import Loader from "../../components/ui/Loader";
+import { useEffect } from "react";
 
 function EditContact() {
   const { id } = useParams();
-  const { data: contact, isLoading } = useFetchData<IContactDetailed>(
+  const { Contacts: contact, isFetchingContacts } = useFetchData<IContactDetailed>(
     `contacts/${id}`,
     "contacts"
   );
@@ -18,8 +19,24 @@ function EditContact() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<IContact>();
+  } = useForm<IContact>(
+    {
+      defaultValues:{
+        name:contact?.name,
+        email:contact?.email,
+        phone_number:contact?.phone_number,
+      }
+    }
+  );
+
+    //Update the form's default values with the data from the API
+    useEffect(() => {
+      if (contact) {
+        reset(contact);
+      }
+    }, [contact]);
 
   function onSubmit(data: IContact) {
     EditContact(data);
@@ -39,7 +56,7 @@ function EditContact() {
         </section>
         <hr className="my-5" />
         <section>
-          {isLoading && <Loader height="50" width="50" color="#0C0C1D" />}
+          {isFetchingContacts && <Loader height="50" width="50" color="#0C0C1D" />}
           {contact && (
             <form onSubmit={handleSubmit(onSubmit)}>
               <section className="my-3">
@@ -47,7 +64,6 @@ function EditContact() {
                 <br />
                 <input
                   type="text"
-                  defaultValue={contact?.name}
                   className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
                   {...register("name", { required: true })}
                 />
@@ -60,7 +76,6 @@ function EditContact() {
                 <br />
                 <input
                   type="email"
-                  defaultValue={contact?.email}
                   className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
                   {...register("email", { required: true })}
                 />
@@ -73,7 +88,6 @@ function EditContact() {
                 <br />
                 <input
                   type="text"
-                  defaultValue={contact?.phone_number}
                   className="border w-full rounded mt-2 px-2 py-1 outline-none appearance-none"
                   {...register("phone_number", { required: true })}
                 />
@@ -89,7 +103,11 @@ function EditContact() {
                 disabled={EditedContactIsPending}
                 type="submit"
               >
-                {EditedContactIsPending ? <Loader height="20" width="20" color="#0C0C1D" /> : "Submit"}
+                {EditedContactIsPending ? (
+                  <Loader height="20" width="20" color="#0C0C1D" />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </form>
           )}

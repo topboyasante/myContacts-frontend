@@ -145,6 +145,35 @@ function useMutationRequest<T>(url: string, key: string) {
     },
   });
 
+
+  
+  const {
+    mutate: UpdatePassword,
+    data: UpdatedPasssword,
+    isPending: UpdatePasswordIsPending,
+    isSuccess: UpdatePasswordWasSuccessful,
+  } = useMutation({
+    mutationFn: async (payload: T) => {
+      const res = await axios.put(
+        `https://mycontacts-backend-fjb8.onrender.com/api/${url}`,
+        payload,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [`${key}`],
+      });
+      toast.success("Contact Details Edited!");
+      reset();
+      navigate("/contacts");
+    },
+    onError: (error: AxiosError<any, any>) => {
+      toast.error(`${error?.response?.data.message}`);
+    },
+  });
+
   return {
     AddContact,
     NewContactAdded,
@@ -166,6 +195,10 @@ function useMutationRequest<T>(url: string, key: string) {
     DeletedUser,
     DeletedUserIsPending,
     DeletedUserWasSuccessful,
+    UpdatePassword,
+    UpdatedPasssword,
+    UpdatePasswordIsPending,
+    UpdatePasswordWasSuccessful,
   };
 }
 

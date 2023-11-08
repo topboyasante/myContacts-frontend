@@ -1,4 +1,4 @@
-import { useFetchData } from "../../hooks/useFetchData";
+import useFetchData from "../../hooks/useFetchData";
 import ContactCard from "../../components/ui/ContactCard";
 import Loader from "../../components/ui/Loader";
 import { IoIosPersonAdd } from "react-icons/io";
@@ -13,7 +13,7 @@ function Main() {
   const accessToken = Cookies.get("accessToken");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchIsLoading, setSearchIsLoading] = useState<boolean>(false);
-  const { data, isLoading, isError } = useFetchData<IContactDetailed[]>(
+  const { Contacts:data,isFetchingContacts,FetchContactsFailed } = useFetchData<IContactDetailed[]>(
     "contacts",
     "contacts"
   );
@@ -70,7 +70,7 @@ function Main() {
           </section>
           <hr className="my-5" />
           <section>
-            {isLoading && (
+            {isFetchingContacts && (
               <section className="w-full h-full flex justify-center items-center">
                 <Loader height="50" width="50" color="#0C0C1D" />
               </section>
@@ -96,7 +96,7 @@ function Main() {
                 )}
               </section>
             )}
-            {isError && (
+            {FetchContactsFailed && (
               <p className="text-center text-xl">
                 Unfortunately, there was an error. Not to fret! Reload the page!
               </p>

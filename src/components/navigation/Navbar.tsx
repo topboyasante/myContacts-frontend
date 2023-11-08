@@ -6,7 +6,7 @@ import { BiChevronDown } from "react-icons/bi";
 import { BsGear } from "react-icons/bs";
 import DropDown from "../ui/DropDown";
 import Cookies from "js-cookie";
-import { useFetchData } from "../../hooks/useFetchData";
+import  useFetchData  from "../../hooks/useFetchData";
 import Avatar from "react-avatar";
 
 type NavbarProps = {
@@ -17,7 +17,7 @@ function Navbar({ isAuthenticated }: NavbarProps) {
   const [navIsOpen, setNavIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const { data: user } = useFetchData<IUser>("users/current", "currentUser");
+  const { UserDetails:user } = useFetchData<IUser>("users/current", "currentUser");
 
   function LogOut() {
     Cookies.remove("accessToken");
